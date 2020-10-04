@@ -37,13 +37,10 @@ exports.createProfile = async (req, res, next) => {
     website,
     location,
     bio,
-    status,
     githubusername,
     skills,
-    youtube,
     facebook,
     twitter,
-    instagram,
     linkedin,
   } = req.body;
 
@@ -54,7 +51,6 @@ exports.createProfile = async (req, res, next) => {
   if (website) profileFields.website = website;
   if (location) profileFields.location = location;
   if (bio) profileFields.bio = bio;
-  if (status) profileFields.status = status;
   if (githubusername) profileFields.githubusername = githubusername;
   if (skills) {
     profileFields.skills = skills.split(",").map((skill) => skill.trim());
@@ -62,14 +58,15 @@ exports.createProfile = async (req, res, next) => {
 
   //Build social object
   profileFields.social = {};
-  if (youtube) profileFields.social.youtube = youtube;
   if (twitter) profileFields.social.twitter = twitter;
   if (facebook) profileFields.social.facebook = facebook;
   if (linkedin) profileFields.social.linkedin = linkedin;
-  if (instagram) profileFields.social.instagram = instagram;
 
   try {
-    let profile = await Profile.findOne({ user: req.user.id });
+    let profile = await Profile.findOne({ user: req.user.id }).populate(
+      "user",
+      ["name", "avatar"]
+    );
 
     if (profile) {
       //Update
@@ -77,7 +74,7 @@ exports.createProfile = async (req, res, next) => {
         { user: req.user.id },
         { $set: profileFields },
         { new: true }
-      );
+      ).populate("user", ["name", "avatar"]);
 
       return res.json(profile);
     }

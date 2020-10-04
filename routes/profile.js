@@ -8,13 +8,7 @@ const profileController = require("../controllers/profile");
 router.get("/me", auth, profileController.getCurrentProfile);
 router.post(
   "/",
-  [
-    auth,
-    [
-      check("status", "Status is required").not().isEmpty(),
-      check("skills", "Skills is required").not().isEmpty(),
-    ],
-  ],
+  [auth, [check("skills", "Skills is required").not().isEmpty()]],
   profileController.createProfile
 );
 router.get("/", profileController.getProfiles);
