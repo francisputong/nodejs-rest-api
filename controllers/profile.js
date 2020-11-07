@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 
-// @route GET api/profile/me
+// @route GET api/profile/user
 // @desc GET current users profile
 // @access Private
 exports.getCurrentProfile = async (req, res, next) => {
@@ -149,20 +149,19 @@ exports.updateExperience = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { title, company, location, from, to, current, description } = req.body;
+  const { title, company, from, to } = req.body;
 
   const newExp = {
     title,
     company,
-    location,
     from,
     to,
-    current,
-    description,
   };
 
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["name", "avatar"]);
 
     profile.experience.unshift(newExp);
 
@@ -180,7 +179,9 @@ exports.updateExperience = async (req, res) => {
 // Private
 exports.deleteExperience = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["name", "avatar"]);
 
     //Get remove index
     const removeIndex = profile.experience
@@ -207,28 +208,19 @@ exports.updateEducation = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const {
-    school,
-    degree,
-    fieldofstudy,
-    from,
-    to,
-    current,
-    description,
-  } = req.body;
+  const { school, degree, from, to } = req.body;
 
   const newEdu = {
     school,
     degree,
-    fieldofstudy,
     from,
     to,
-    current,
-    description,
   };
 
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["name", "avatar"]);
 
     profile.education.unshift(newEdu);
 
@@ -246,7 +238,9 @@ exports.updateEducation = async (req, res) => {
 // Private
 exports.deleteEducation = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate("user", ["name", "avatar"]);
 
     //Get remove index
     const removeIndex = profile.education

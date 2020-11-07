@@ -43,6 +43,20 @@ exports.getPostsByUserId = async (req, res, next) => {
   }
 };
 
+// @route Get api/posts/user/:id
+// @desc Get user posts by id
+// @access Private
+exports.getPostsById = async (req, res, next) => {
+  try {
+    const posts = await Post.find({ user: req.params.id }).sort({ date: -1 });
+    if (!posts) return res.json([]);
+    res.json(posts);
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
 // @route Get api/posts
 // @desc Get all posts
 // @access Private

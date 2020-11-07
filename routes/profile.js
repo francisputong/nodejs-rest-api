@@ -5,7 +5,7 @@ const { check } = require("express-validator");
 
 const profileController = require("../controllers/profile");
 
-router.get("/me", auth, profileController.getCurrentProfile);
+router.get("/user", auth, profileController.getCurrentProfile);
 router.post(
   "/",
   [auth, [check("skills", "Skills is required").not().isEmpty()]],
@@ -34,7 +34,6 @@ router.put(
     [
       check("school", "School is required").not().isEmpty(),
       check("degree", "Degree is required").not().isEmpty(),
-      check("fieldofstudy", "Field of study date is required").not().isEmpty(),
       check("from", "From of study date is required").not().isEmpty(),
     ],
   ],

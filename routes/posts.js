@@ -12,6 +12,7 @@ router.post(
 );
 router.get("/", auth, postsController.getPosts);
 router.get("/user", auth, postsController.getPostsByUserId);
+router.get("/user/:id", auth, postsController.getPostsById);
 router.get("/:id", auth, postsController.getPostbyId);
 router.delete("/:id", auth, postsController.deletePost);
 router.put("/like/:id", auth, postsController.likePost);

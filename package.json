@@ -4,8 +4,8 @@
   "description": "Social Network for developers",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "server": "nodemon server"
+    "start": "node app",
+    "dev": "nodemon app"
   },
   "author": "Francis Putong",
   "license": "MIT",
